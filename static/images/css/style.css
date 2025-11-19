@@ -1,0 +1,148 @@
+/* ==============================
+   Global Theme
+   ============================== */
+   
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #121212, #1c1c1c);
+    color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ==============================
+   Glass Container
+   ============================== */
+.container {
+    width: 90%;
+    max-width: 700px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+    transition: all 0.3s ease;
+}
+
+.container:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8);
+}
+
+/* ==============================
+   Headings
+   ============================== */
+h1, h2 {
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+h1 {
+    color: #00BFFF; /* Electric Blue */
+}
+
+h2 {
+    color: #6A0DAD; /* Vibrant Purple */
+}
+
+/* ==============================
+   Paragraphs
+   ============================== */
+p {
+    color: #e0e0e0;
+    line-height: 1.6;
+}
+
+/* ==============================
+   Inputs
+   ============================== */
+input[type="text"],
+input[type="number"],
+select {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+input:focus, select:focus {
+    background: rgba(0, 191, 255, 0.2);
+    box-shadow: 0 0 10px #00BFFF;
+}
+
+/* ==============================
+   Buttons
+   ============================== */
+.glass-btn, .start-button {
+    display: inline-block;
+    background: linear-gradient(90deg, #E40078, #6A0DAD);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 35px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.glass-btn:hover, .start-button:hover {
+    background: linear-gradient(90deg, #00BFFF, #6A0DAD);
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0, 191, 255, 0.6);
+}
+
+/* ==============================
+   Result Cards
+   ============================== */
+.result {
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    color: #fff;
+    font-size: 1.2rem;
+}
+
+.result.positive {
+    background: rgba(155, 17, 30, 0.5); /* Deep Red tint */
+    box-shadow: 0 0 20px rgba(155, 17, 30, 0.5);
+}
+
+.result.negative {
+    background: rgba(0, 191, 255, 0.3); /* Electric Blue tint */
+    box-shadow: 0 0 20px rgba(0, 191, 255, 0.4);
+}
+
+/* ==============================
+   Footer
+   ============================== */
+footer {
+    margin-top: 25px;
+    color: #bbb;
+    font-size: 0.85em;
+}
+
+/* ==============================
+   Responsive
+   ============================== */
+@media (max-width: 600px) {
+    .container {
+        padding: 25px;
+    }
+    .glass-btn, .start-button {
+        width: 100%;
+    }
+}

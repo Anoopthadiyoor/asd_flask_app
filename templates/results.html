@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ASD Prediction Result</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Gradient Animation */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #f0f0f0;
+            background: linear-gradient(135deg, #121212, #6A0DAD, #00BFFF);
+            background-size: 400% 400%;
+            animation: gradientBG 20s ease infinite;
+            position: relative;
+        }
+
+        /* AI Background Image */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('/static/images/1030.jpg') no-repeat center center;
+            background-size: cover;
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Neuron animation layer */
+        canvas#neuronCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            width: 90%;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 20px;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.6);
+            backdrop-filter: blur(12px);
+            padding: 50px 60px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(25px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            color: #00BFFF;
+            font-size: 2.3em;
+            margin-bottom: 25px;
+            text-shadow: 0 0 15px rgba(0,191,255,0.6);
+        }
+
+        h2 {
+            font-size: 1.7em;
+            color: #ffffff;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        p {
+            font-size: 1.1em;
+            color: #cccccc;
+            margin-bottom: 20px;
+        }
+
+        .result {
+            padding: 25px 20px;
+            border-radius: 15px;
+            margin: 25px 0;
+            box-shadow: 0 0 25px rgba(0,0,0,0.4);
+            transition: all 0.3s ease;
+        }
+
+        .positive {
+            background: linear-gradient(90deg, rgba(228,0,120,0.25), rgba(155,17,30,0.4));
+            border-left: 5px solid #E40078;
+            box-shadow: 0 0 25px rgba(228,0,120,0.3);
+        }
+
+        .negative {
+            background: linear-gradient(90deg, rgba(0,191,255,0.25), rgba(106,13,173,0.3));
+            border-left: 5px solid #00BFFF;
+            box-shadow: 0 0 25px rgba(0,191,255,0.3);
+        }
+
+        .glass-btn {
+            display: inline-block;
+            background: linear-gradient(90deg, #00BFFF, #6A0DAD);
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 35px;
+            font-weight: 600;
+            font-size: 1em;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0,191,255,0.3);
+        }
+
+        .glass-btn:hover {
+            transform: scale(1.05);
+            background: linear-gradient(90deg, #E40078, #6A0DAD);
+            box-shadow: 0 0 20px rgba(228,0,120,0.6);
+        }
+    </style>
+</head>
+<body>
+    <canvas id="neuronCanvas"></canvas>
+
+    <div class="container">
+        <h1>Prediction Result</h1>
+
+        <div class="result {% if prediction == '1' %}positive{% else %}negative{% endif %}">
+            <h2>
+                {% if prediction == '1' %}
+                    Possible Indication of ASD
+                {% else %}
+                    No Indication of ASD
+                {% endif %}
+            </h2>
+
+            <p>
+                {% if prediction == '1' %}
+                    Based on your responses, there may be a higher chance of ASD.
+                    We recommend consulting a healthcare professional for proper evaluation.
+                {% else %}
+                    Based on your responses, your data indicates typical developmental patterns.
+                    If you have any concerns, please consider consulting a professional for further evaluation.
+                {% endif %}
+            </p>
+        </div>
+
+        <a href="{{ url_for('assessment') }}" class="glass-btn">Retake Assessment</a>
+    </div>
+
+    <script>
+        const canvas = document.getElementById("neuronCanvas");
+        const ctx = canvas.getContext("2d");
+        let neurons = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+
+        // Increase size & number for visibility
+        for (let i = 0; i < 70; i++) {
+            neurons.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                r: Math.random() * 5 + 3,  // increased from 2+1
+                dx: (Math.random() - 0.5) * 0.6,
+                dy: (Math.random() - 0.5) * 0.6
+            });
+        }
+
+        function drawNeurons() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw connections
+            for (let i = 0; i < neurons.length; i++) {
+                for (let j = i + 1; j < neurons.length; j++) {
+                    const dx = neurons[i].x - neurons[j].x;
+                    const dy = neurons[i].y - neurons[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < 150) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(0,191,255,${1 - distance / 150})`;
+                        ctx.lineWidth = 0.7;
+                        ctx.shadowBlur = 4;
+                        ctx.shadowColor = "#00BFFF";
+                        ctx.moveTo(neurons[i].x, neurons[i].y);
+                        ctx.lineTo(neurons[j].x, neurons[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            // Draw neurons (larger & glowing)
+            for (let n of neurons) {
+                ctx.beginPath();
+                ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+                ctx.fillStyle = "rgba(0,191,255,0.95)";
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = "#00BFFF";
+                ctx.fill();
+
+                n.x += n.dx;
+                n.y += n.dy;
+
+                if (n.x < 0 || n.x > canvas.width) n.dx *= -1;
+                if (n.y < 0 || n.y > canvas.height) n.dy *= -1;
+            }
+
+            requestAnimationFrame(drawNeurons);
+        }
+        drawNeurons();
+    </script>
+</body>
+</html>

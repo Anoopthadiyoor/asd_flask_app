@@ -1,0 +1,150 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NeuroMind AI | Autism Spectrum Disorder Prediction</title>
+
+    <style>
+
+        /* Gradient Background */
+        body {
+            font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+
+            background: linear-gradient(135deg, #121212, #6A0DAD, #00BFFF);
+            background-size: 400% 400%;
+            animation: gradientShift 12s ease infinite;
+
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Shadow Background Image (same style as results.html) */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+
+            background: url('{{ url_for("static", filename="images/1030.jpg") }}') 
+                        no-repeat center center;
+            background-size: cover;
+
+            opacity: 0.15;      /* faint shadow effect */
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Glass container */
+        .container {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 25px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 60px 100px;
+            max-width: 650px;
+            width: 100%;
+            animation: fadeIn 1.2s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo {
+            width: 300px;
+            height: auto;
+            margin-bottom: 25px;
+            filter: drop-shadow(0 0 10px rgba(0, 191, 255, 0.6));
+        }
+
+        h1 {
+            color: #00BFFF;
+            font-size: 2.3em;
+            margin-bottom: 15px;
+            text-shadow: 0 0 15px rgba(0, 191, 255, 0.6);
+        }
+
+        h1 span {
+            color: #E40078;
+            text-shadow: 0 0 15px rgba(228, 0, 120, 0.6);
+        }
+
+        p {
+            color: #f0f0f0;
+            font-size: 1.1em;
+            margin-bottom: 35px;
+            line-height: 1.6;
+        }
+
+        .start-button {
+            display: inline-block;
+            padding: 18px 50px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #ffffff;
+            background: linear-gradient(90deg, #00BFFF, #E40078);
+            border-radius: 12px;
+            text-decoration: none;
+            box-shadow: 0 6px 25px rgba(0, 191, 255, 0.4);
+            transition: 0.3s ease;
+        }
+
+        .start-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            background: linear-gradient(90deg, #E40078, #6A0DAD);
+            box-shadow: 0 0 25px rgba(228, 0, 120, 0.6);
+        }
+
+        footer {
+            margin-top: 35px;
+            color: #bbbbbb;
+            font-size: 0.9em;
+        }
+
+        footer span {
+            color: #E40078;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <img src="{{ url_for('static', filename='images/freepik__cyberpunk-side-posed-human-face-no-hair-with-brain__59148.png') }}" 
+             alt="NeuroMind AI Logo" class="logo">
+
+        <h1><span>NeuroMind AI</span></h1>
+
+        <p>Empowering early autism screening through intelligent AI-driven analysis.  
+           Take a quick, science-based assessment to identify potential ASD indicators.</p>
+
+        <a href="{{ url_for('assessment') }}" class="start-button">Start Assessment</a>
+
+        <footer>
+            © 2025 <span>NeuroMind AI</span> | Developed by <span>Anoop Krishnan</span>
+        </footer>
+    </div>
+
+</body>
+</html>
